@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -24,7 +25,7 @@ export function HomePage() {
     try { const stored = localStorage.getItem("sunwai.visuals"); if (stored === "full" || stored === "lite" || stored === "off") tier = stored; } catch { /* visual preference is optional */ }
     let hasWebGL2 = false;
     try { const canvas = document.createElement("canvas"); const context = canvas.getContext("webgl2"); hasWebGL2 = Boolean(context); context?.getExtension("WEBGL_lose_context")?.loseContext(); } catch { /* the CSS scene remains available */ }
-    setVisualTier(tier); setReducedMotion(motion.matches);
+    queueMicrotask(() => { setVisualTier(tier); setReducedMotion(motion.matches); });
     const reveal = () => { if (hasWebGL2 && !motion.matches && tier !== "off") setShowScene(true); else setShowScene(false); };
     const observer = typeof IntersectionObserver !== "undefined" ? new IntersectionObserver((entries) => { if (entries.some((entry) => entry.isIntersecting)) reveal(); }, { rootMargin: "120px" }) : null;
     if (heroArtRef.current && observer) observer.observe(heroArtRef.current); else reveal();
@@ -113,6 +114,6 @@ export function HomePage() {
 
 function ImageAttachment({ file, onRemove }: { file: File; onRemove: () => void }) {
   const [preview, setPreview] = useState("");
-  useEffect(() => { const url = URL.createObjectURL(file); setPreview(url); return () => URL.revokeObjectURL(url); }, [file]);
-  return <div className="attachment-chip"><span className="attachment-preview">{preview ? <img src={preview} alt="" /> : <FileImage size={15}/>}</span><span>{file.name}</span><button type="button" aria-label={`Remove ${file.name}`} onClick={onRemove}><X size={14}/></button></div>;
+  useEffect(() => { const url = URL.createObjectURL(file); queueMicrotask(() => setPreview(url)); return () => URL.revokeObjectURL(url); }, [file]);
+  return <div className="attachment-chip"><span className="attachment-preview">{preview ? <Image src={preview} alt="" width={28} height={28} unoptimized /> : <FileImage size={15}/>}</span><span>{file.name}</span><button type="button" aria-label={`Remove ${file.name}`} onClick={onRemove}><X size={14}/></button></div>;
 }

@@ -1,6 +1,6 @@
 import { DISCLAIMER_EN, scenarios } from "./content";
 import { parseCaseResponse, parseCaseSummaries, parseDemoClock } from "./schemas";
-import type { ApiEvent, CaseRecord, CaseSummary, DemoClock, Draft, EscalationPack, Language, ReviewPacket, Scenario, Step, StepStatus } from "./types";
+import type { ApiEvent, CaseRecord, CaseSummary, DemoClock, Draft, EscalationPack, Language, ReviewPacket, Scenario, Step } from "./types";
 
 const API_BASE = (process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000").replace(/\/$/, "");
 const CASES_KEY = "sunwai.cases.v1";

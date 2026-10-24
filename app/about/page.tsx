@@ -1,0 +1,15 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, BadgeCheck, BookOpenCheck, FileText, LockKeyhole, MousePointer2, ShieldAlert, ShieldCheck } from "lucide-react";
+import { usePrefs } from "@/components/app-shell";
+
+export default function AboutPage() {
+  const { t } = usePrefs();
+  return <main className="about-page"><div className="breadcrumb-simple"><Link href="/">Home</Link><span>/</span><b>{t("navAbout")}</b></div><section className="about-hero"><div className="about-hero-copy"><span className="eyebrow">A LITTLE MORE CLARITY, ONE STEP AT A TIME</span><h1>{t("aboutTitle")}</h1><p>{t("aboutIntro")}</p><Link href="/" className="button button-primary">Start with your story <ArrowRight size={16}/></Link></div><div className="about-hero-art" aria-hidden="true"><div className="about-file"><span className="file-tab">YOUR NEXT STEP</span><div><i/><i/><i/></div><span className="about-stamp"><BadgeCheck size={16}/> SOURCE<br/>SHOWN</span></div><span className="about-art-orbit"/></div></section>
+    <section className="about-process"><div className="about-section-title"><span className="eyebrow">THE PROCESS</span><h2>From a problem to a clear next step.</h2></div><div className="process-cards"><article><span className="process-number">01</span><span className="process-icon"><FileText size={18}/></span><h3>Tell us what happened</h3><p>Write in English, Hindi or Hinglish. Add a receipt or message if it helps explain the issue.</p></article><article><span className="process-number">02</span><span className="process-icon"><BookOpenCheck size={18}/></span><h3>See the complaint path</h3><p>Sunwai organizes the possible forums and shows the rule source behind each date.</p></article><article><span className="process-number">03</span><span className="process-icon"><MousePointer2 size={18}/></span><h3>Prepare, then review</h3><p>An agent can pre-fill a form after you approve the exact fields it will use.</p></article><article><span className="process-number">04</span><span className="process-icon"><ShieldCheck size={18}/></span><h3>You decide what to submit</h3><p>The agent stops at the review screen. You submit on the official portal yourself.</p></article></div></section>
+    <section className="safety-section"><div className="safety-title"><span className="eyebrow">SAFETY BY DESIGN</span><h2>{t("safety")}</h2></div><div className="safety-points"><div><span><ShieldCheck size={16}/></span><p>{t("safety1")}</p></div><div><span><LockKeyhole size={16}/></span><p>{t("safety2")}</p></div><div><span><BadgeCheck size={16}/></span><p>{t("safety3")}</p></div></div></section>
+    <section className="limits-card"><div className="limits-icon"><ShieldAlert size={18}/></div><div><span className="eyebrow">A CLEAR LIMIT</span><h2>{t("aboutLimits")}</h2><p>{t("aboutLimitsText")}</p></div><div className="limits-decoration">SUNWAI<br/>HELPS YOU<br/>FOLLOW THE<br/>PROCESS.</div></section>
+    <div className="about-bottom"><span>Need a place to begin?</span><Link href="/">Tell us what happened <ArrowRight size={15}/></Link></div>
+  </main>;
+}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -114,5 +115,5 @@ export function HomePage() {
 function ImageAttachment({ file, onRemove }: { file: File; onRemove: () => void }) {
   const [preview, setPreview] = useState("");
   useEffect(() => { const url = URL.createObjectURL(file); queueMicrotask(() => setPreview(url)); return () => URL.revokeObjectURL(url); }, [file]);
-  return <div className="attachment-chip"><span className="attachment-preview">{preview ? <img src={preview} alt="" /> : <FileImage size={15}/>}</span><span>{file.name}</span><button type="button" aria-label={`Remove ${file.name}`} onClick={onRemove}><X size={14}/></button></div>;
+  return <div className="attachment-chip"><span className="attachment-preview">{preview ? <Image src={preview} alt="" width={28} height={28} unoptimized /> : <FileImage size={15}/>}</span><span>{file.name}</span><button type="button" aria-label={`Remove ${file.name}`} onClick={onRemove}><X size={14}/></button></div>;
 }

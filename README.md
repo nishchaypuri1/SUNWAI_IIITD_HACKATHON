@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sunwai frontend
 
-## Getting Started
+The Sunwai web interface helps a person understand a consumer complaint route, check the rule references behind its dates, prepare a complaint draft, and review a pre-filled form. The person submits on the official portal themselves.
 
-First, run the development server:
+## Start the frontend
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+cd web
+pnpm install
+Copy-Item .env.example .env.local   # PowerShell; use cp on macOS/Linux
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The default `NEXT_PUBLIC_API_MODE=mock` works without a backend. It stores demo cases and demo controls in this browser only. Use `NEXT_PUBLIC_API_MODE=live` with `NEXT_PUBLIC_API_BASE_URL=http://localhost:8000` to connect to the API described in `API_CONTRACT.md`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Frontend routes
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `/` complaint intake, scenarios, optional voice input and image attachments
+- `/case/[id]` facts, complaint ladder, proof stamps, editable draft, agent approval, review packet and timeline
+- `/case/[id]/pack` print-friendly evidence pack
+- `/cases` case list
+- `/sandbox/grievance` fictional Kanakpur Demo Bank form used for rehearsals
+- `/sandbox/status` deterministic demo status lookup
+- `/about` how the flow and handoff work
 
-## Learn More
+The floating Demo controls (or `Shift+D`) set the simulated date, rehearse a successful run / OTP handoff / failure, and show sandbox review and submit-click counts. Use the case workspace’s Plan, Draft, Agent and Timeline tabs on mobile.
 
-To learn more about Next.js, take a look at the following resources:
+## Configuration
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Only public browser configuration belongs in `.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `NEXT_PUBLIC_API_BASE_URL`
+- `NEXT_PUBLIC_API_MODE=mock|live`
+- `NEXT_PUBLIC_SANDBOX_PUBLIC_URL`
 
-## Deploy on Vercel
+No LLM or browser-agent credentials belong in the frontend. The API client validates case, summary and clock responses against the contract-shaped Zod schemas before rendering live data.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Design notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See [`DESIGN.md`](./DESIGN.md) for tokens, interaction patterns, accessibility choices and the scope of the demo visuals.

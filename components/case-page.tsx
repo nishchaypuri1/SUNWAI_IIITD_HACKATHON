@@ -31,7 +31,7 @@ export function CasePage({ id }: { id: string }) {
     if (event.type === "safety_flagged") { runActive.current = false; setIsRunning(false); setSafetyAlert({ reason: String(event.payload.reason || "The agent may have tried a final action."), evidence: String(event.payload.evidence || "Please inspect the portal before doing anything else.") }); setActiveTab("agent"); }
     if (event.type === "run_failed") { runActive.current = false; setIsRunning(false); setFeed((items) => [...items, { at: "Now", message: String(event.payload.message || "This run could not finish."), kind: "fail" }]); setActiveTab("agent"); }
   }), [id, refresh]);
-  useEffect(() => { const selected = record?.steps.find((step) => step.ordinal === selectedOrdinal); if (selected?.draft) { setDraftBody(selected.draft.body); setDraftSubject(selected.draft.subject); } else { setDraftBody(""); setDraftSubject(""); } }, [record, selectedOrdinal]);
+  useEffect(() => { queueMicrotask(() => { const selected = record?.steps.find((step) => step.ordinal === selectedOrdinal); if (selected?.draft) { setDraftBody(selected.draft.body); setDraftSubject(selected.draft.subject); } else { setDraftBody(""); setDraftSubject(""); } }); }, [record, selectedOrdinal]);
 
   const currentStep = record?.steps.find((step) => step.ordinal === selectedOrdinal) || record?.steps[0] || null;
   const displayDate = (value: string | null | undefined) => { if (!value) return "—"; return new Intl.DateTimeFormat(language === "hi" ? "hi-IN" : "en-IN", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" }).format(new Date(`${value}T12:00:00+05:30`)); };

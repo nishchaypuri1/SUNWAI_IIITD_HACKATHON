@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Anek_Latin, Mukta } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
 import { QueryProvider } from "@/components/query-provider";
+import { Suspense, type ReactNode } from "react";
 import "./globals.css";
 
 const anek = Anek_Latin({ variable: "--font-display", subsets: ["latin"], display: "swap" });
@@ -17,6 +18,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = { themeColor: "#f2f4f7", width: "device-width", initialScale: 1, maximumScale: 5 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${anek.variable} ${mukta.variable}`}><body><QueryProvider><AppShell>{children}</AppShell></QueryProvider></body></html>;
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+  return <html lang="en" className={`${anek.variable} ${mukta.variable}`}><body><QueryProvider><Suspense fallback={null}><AppShell>{children}</AppShell></Suspense></QueryProvider></body></html>;
 }

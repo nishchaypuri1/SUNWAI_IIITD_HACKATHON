@@ -1,0 +1,11 @@
+: Mock read-only status check on the public sandbox status page. COMPLETE result replaced at replay time.
+data: {"type":"STARTED","run_id":"tf_fixture","timestamp":"2026-10-24T12:20:00+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Opening the complaint status page","timestamp":"2026-10-24T12:20:02+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Entering the complaint number and looking up the status","timestamp":"2026-10-24T12:20:05+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Reading the status and last update date","timestamp":"2026-10-24T12:20:07+05:30"}
+
+data: {"type":"COMPLETE","run_id":"tf_fixture","status":"COMPLETED","result":{"found":true,"status_text":"Under review","last_updated":"","remarks":"","blocker":"none"},"timestamp":"2026-10-24T12:20:08+05:30"}
+

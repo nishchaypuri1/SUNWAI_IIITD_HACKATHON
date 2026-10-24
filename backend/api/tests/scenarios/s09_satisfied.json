@@ -1,0 +1,26 @@
+{
+  "id": "s09_satisfied",
+  "text": "Axis Bank charged me Rs 1,200 twice on 28 September 2026. I complained to Axis Bank on 1 October 2026. They replied on 10 October 2026 and refunded the money. I am satisfied with the resolution.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "done"
+      },
+      {
+        "ordinal": 2,
+        "status": "skipped"
+      }
+    ],
+    "warnings_contain": [
+      "satisfied"
+    ],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

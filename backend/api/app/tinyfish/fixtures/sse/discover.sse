@@ -1,0 +1,9 @@
+: Mock read-only grievance discovery. COMPLETE result replaced at replay time (fields stay empty unless recorded).
+data: {"type":"STARTED","run_id":"tf_fixture","timestamp":"2026-10-24T12:30:00+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Opening the company's grievance redressal page","timestamp":"2026-10-24T12:30:03+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Reading the grievance contact details and escalation levels","timestamp":"2026-10-24T12:30:07+05:30"}
+
+data: {"type":"COMPLETE","run_id":"tf_fixture","status":"COMPLETED","result":{"grievance_form_url":"","grievance_email":"","nodal_officer_name":"","escalation_matrix":[],"evidence_quote":"","blocker":"none"},"timestamp":"2026-10-24T12:30:09+05:30"}
+

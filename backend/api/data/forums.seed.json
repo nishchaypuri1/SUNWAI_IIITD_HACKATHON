@@ -1,0 +1,13 @@
+[
+  {"id": "company_grievance", "name": "Company / bank grievance desk", "name_hi": "कंपनी / बैंक शिकायत विभाग",
+   "kind": "company", "official_url": null, "filing_url": null, "track_url": null, "sector": "any"},
+  {"id": "rbi_cms", "name": "RBI Ombudsman (Complaint Management System)", "name_hi": "आरबीआई लोकपाल (शिकायत प्रबंधन प्रणाली)",
+   "kind": "regulator", "official_url": "https://cms.rbi.org.in", "filing_url": "https://cms.rbi.org.in",
+   "track_url": "https://cms.rbi.org.in", "sector": "banking"},
+  {"id": "nch", "name": "National Consumer Helpline", "name_hi": "राष्ट्रीय उपभोक्ता हेल्पलाइन",
+   "kind": "helpline", "official_url": "https://consumerhelpline.gov.in", "filing_url": "https://consumerhelpline.gov.in",
+   "track_url": "https://consumerhelpline.gov.in", "sector": "consumer"},
+  {"id": "consumer_commission", "name": "Consumer Commission (e-Jagriti)", "name_hi": "उपभोक्ता आयोग (ई-जागृति)",
+   "kind": "commission", "official_url": "https://e-jagriti.gov.in", "filing_url": "https://e-jagriti.gov.in",
+   "track_url": null, "sector": "consumer"}
+]

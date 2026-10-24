@@ -1,0 +1,28 @@
+{
+  "id": "s15_rejected_reply_date_unknown",
+  "text": "ICICI Bank rejected my complaint about a wrong charge of Rs 590 on my card. I complained on 1 October 2026.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "due"
+      },
+      {
+        "ordinal": 2,
+        "status": "open",
+        "opens_at": null,
+        "closes_at": null
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": [
+      "prior_contact.reply_date"
+    ]
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

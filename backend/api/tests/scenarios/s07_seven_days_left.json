@@ -1,0 +1,29 @@
+{
+  "id": "s07_seven_days_left",
+  "text": "ATM withdrawal of Rs 3,000 failed at a Bank of Baroda ATM on 28 June 2026. I complained to Bank of Baroda on 2 July 2026. No reply yet.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "due"
+      },
+      {
+        "ordinal": 2,
+        "status": "open",
+        "opens_at": "2026-08-01",
+        "closes_at": "2026-10-30",
+        "days_until_close": 6
+      }
+    ],
+    "warnings_contain": [
+      "Less than 7 days"
+    ],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

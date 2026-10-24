@@ -1,0 +1,30 @@
+{
+  "id": "s14_complaint_date_unknown",
+  "text": "Paytm ne 899 kaat liye 12 Oct ko. Maine Paytm ko complaint ki thi par date yaad nahi.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "waiting",
+        "due_at": null
+      },
+      {
+        "ordinal": 2,
+        "status": "locked",
+        "opens_at": null,
+        "closes_at": null,
+        "needs_verification": true
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": [
+      "prior_contact.date"
+    ]
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

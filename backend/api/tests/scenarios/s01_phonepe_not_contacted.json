@@ -1,0 +1,27 @@
+{
+  "id": "s01_phonepe_not_contacted",
+  "text": "PhonePe se 20 Oct ko 1,499 rupaye do baar kaat liye. UTR 629384710562. Abhi tak bank ya PhonePe ko complaint nahi ki. Paise wapas chahiye.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "open",
+        "due_at": null
+      },
+      {
+        "ordinal": 2,
+        "status": "locked",
+        "opens_at": null,
+        "closes_at": null
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

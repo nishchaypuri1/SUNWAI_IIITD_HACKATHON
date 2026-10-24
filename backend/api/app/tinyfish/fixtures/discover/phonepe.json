@@ -1,0 +1,17 @@
+{
+  "match": "phonepe",
+  "recorded_at": "2026-10-24T12:50:00+05:30",
+  "note": "Read from https://www.phonepe.com/grievance-policy/ on 2026-10-24. Email addresses are obfuscated on that page, so grievance_email is empty. Personal names intentionally not recorded.",
+  "result": {
+    "grievance_form_url": "https://grievance.phonepe.com/",
+    "grievance_email": "",
+    "nodal_officer_name": "",
+    "escalation_matrix": [
+      {"level": "Level 1: Customer support (app: History > transaction > Contact PhonePe Support)", "contact": "https://support.phonepe.com/"},
+      {"level": "Level 2: Grievance desk", "contact": "https://grievance.phonepe.com/"},
+      {"level": "Level 3: Nodal & Principal Nodal Officers", "contact": "https://grievance.phonepe.com/nodal-officer"}
+    ],
+    "evidence_quote": "customers can choose to escalate their concern to the grievance desk by clicking here – https://grievance.phonepe.com/",
+    "blocker": "none"
+  }
+}

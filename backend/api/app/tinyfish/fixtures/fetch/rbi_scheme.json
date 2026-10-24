@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-24T12:40:00+05:30",
+  "note": "Excerpt assembled from sentence fragments quoted verbatim from the official RBI FAQ page on 2026-10-24; joins between fragments and the filing-modes sentence may not match the page word for word. Re-record the full page with scripts/record_fixtures.py (TinyFish Fetch, ttl=0) before relying on it.",
+  "results": [
+    {
+      "url": "https://www.rbi.org.in/commonperson/english/scripts/FAQs.aspx?Id=3407",
+      "final_url": "https://www.rbi.org.in/commonperson/english/scripts/FAQs.aspx?Id=3407",
+      "title": "Reserve Bank - Integrated Ombudsman Scheme, 2026",
+      "text": "Reserve Bank - Integrated Ombudsman Scheme, 2026\n\nIt comes into force with effect from July 1, 2026.\n\nThe complainant must first approach the concerned Regulated Entity.\n\nA complaint can be filed before the RBI Ombudsman if the complainant has not received any reply within 30 days or if the complainant is not satisfied with the reply/resolution provided by the Regulated Entity.\n\nThe complaint must be made to the RBI Ombudsman within 90 days from the date on which the above timeline expires or the date of the last communication from the concerned Regulated Entity, whichever is later.\n\nComplaints received before July 1, 2026; appeals arising from decisions under RB-IOS, 2021; Execution of awards issued thereunder will continue to be governed by RB-IOS, 2021 and related RBI instructions.\n\nComplaints can be filed online through the CMS portal at https://cms.rbi.org.in. Complaints can also be filed by sending the complaint to crpc@rbi.org.in.\n\nThe IVRS facility on Toll Free No. 14448 is available 24x7."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "match": ["phonepe"],
+  "recorded_at": "2026-10-24T12:45:00+05:30",
+  "note": "Recorded from a web search on 2026-10-24 (titles and URLs only).",
+  "results": [
+    {"title": "PhonePe Grievance Policy", "url": "https://www.phonepe.com/grievance-policy/", "snippet": "", "site_name": "phonepe.com"},
+    {"title": "Contact Us", "url": "https://www.phonepe.com/contact-us/", "snippet": "", "site_name": "phonepe.com"},
+    {"title": "PhonePe: Official Grievance Redressal & Escalation Protocol", "url": "https://citizen.complainthub.org/t/phonepe-official-grievance-redressal-escalation-protocol/30452", "snippet": "", "site_name": "complainthub.org"}
+  ]
+}

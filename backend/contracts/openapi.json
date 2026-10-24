@@ -1,0 +1,3384 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sunwai API",
+    "version": "1.0.0",
+    "description": "Sunwai backend. Mirrors contracts/API_CONTRACT.md v1.0."
+  },
+  "paths": {
+    "/api/cases": {
+      "get": {
+        "summary": "List cases (E6)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "list_cases"
+      },
+      "post": {
+        "summary": "Create a case from text + screenshots (E7)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "create_case",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "text"
+                ],
+                "properties": {
+                  "text": {
+                    "type": "string",
+                    "minLength": 10,
+                    "maxLength": 4000
+                  },
+                  "language": {
+                    "type": "string",
+                    "enum": [
+                      "en",
+                      "hi",
+                      "hinglish"
+                    ]
+                  },
+                  "files": {
+                    "type": "array",
+                    "maxItems": 3,
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}": {
+      "get": {
+        "summary": "Get a case (E10)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "get_case",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/cases/{case_id}/answers": {
+      "post": {
+        "summary": "Answer follow-up questions (E8)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "answers",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnswersRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/plan": {
+      "post": {
+        "summary": "Plan the escalation ladder (E9)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "plan",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/cases/{case_id}/close": {
+      "post": {
+        "summary": "Close a case (E21)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "close",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CloseRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/evidence-pack": {
+      "get": {
+        "summary": "Evidence pack download (E25)",
+        "tags": [
+          "cases"
+        ],
+        "operationId": "evidence",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "md (default) or pdf (not available yet)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/debug/llm-stats": {
+      "get": {
+        "summary": "LLM gateway statistics (E26)",
+        "tags": [
+          "system"
+        ],
+        "operationId": "llm_stats"
+      }
+    },
+    "/api/demo/scenarios": {
+      "get": {
+        "summary": "Demo scenarios (E2)",
+        "tags": [
+          "demo"
+        ],
+        "operationId": "scenarios"
+      }
+    },
+    "/api/demo/clock": {
+      "get": {
+        "summary": "Demo clock (E3)",
+        "tags": [
+          "demo"
+        ],
+        "operationId": "get_clock"
+      },
+      "post": {
+        "summary": "Advance or reset the demo clock (E4)",
+        "tags": [
+          "demo"
+        ],
+        "operationId": "set_clock",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClockRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/forums": {
+      "get": {
+        "summary": "Forums (E5)",
+        "tags": [
+          "reference"
+        ],
+        "operationId": "forums"
+      }
+    },
+    "/api/cases/{case_id}/events": {
+      "get": {
+        "summary": "Server-Sent Events for a case (E22)",
+        "tags": [
+          "events"
+        ],
+        "operationId": "stream",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "since",
+            "in": "query",
+            "required": false,
+            "description": "replay events with id greater than this",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Last-Event-ID",
+            "in": "header",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Health and configuration (E1)",
+        "tags": [
+          "system"
+        ],
+        "operationId": "health"
+      }
+    },
+    "/api/rules/{forum_id}": {
+      "get": {
+        "summary": "Current official rule for a forum (E23)",
+        "tags": [
+          "rules"
+        ],
+        "operationId": "get_rule",
+        "parameters": [
+          {
+            "name": "forum_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/rules/{forum_id}/refresh": {
+      "post": {
+        "summary": "Re-fetch the official rule live (E24)",
+        "tags": [
+          "rules"
+        ],
+        "operationId": "refresh",
+        "parameters": [
+          {
+            "name": "forum_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/runs/{run_id}": {
+      "get": {
+        "summary": "Run detail with events (E16)",
+        "tags": [
+          "runs"
+        ],
+        "operationId": "get_run",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/runs/{run_id}/cancel": {
+      "post": {
+        "summary": "Cancel a run (E17)",
+        "tags": [
+          "runs"
+        ],
+        "operationId": "cancel_run",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/sandbox/attempts": {
+      "post": {
+        "summary": "Sandbox page logs an attempt (S1)",
+        "tags": [
+          "sandbox"
+        ],
+        "operationId": "add_attempt",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SandboxAttemptRequest"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Sandbox attempt counters (S2)",
+        "tags": [
+          "sandbox"
+        ],
+        "operationId": "list_attempts"
+      },
+      "delete": {
+        "summary": "Reset sandbox counters (S3)",
+        "tags": [
+          "sandbox"
+        ],
+        "operationId": "clear_attempts"
+      }
+    },
+    "/api/sandbox/status/{complaint_number}": {
+      "get": {
+        "summary": "Deterministic fake status (S4)",
+        "tags": [
+          "sandbox"
+        ],
+        "operationId": "sandbox_status",
+        "parameters": [
+          {
+            "name": "complaint_number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/discover": {
+      "post": {
+        "summary": "Find the company's grievance route (E11)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "discover",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/draft": {
+      "post": {
+        "summary": "Generate a draft (E12)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "make_draft",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "put": {
+        "summary": "Save an edited draft (E13)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "edit_draft",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DraftUpdateRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/prefill/preview": {
+      "get": {
+        "summary": "Preview what the agent will type (E14)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "preview",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "portal",
+            "in": "query",
+            "required": false,
+            "description": "sandbox (default) or live",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/prefill": {
+      "post": {
+        "summary": "Approve and start the agent pre-fill (E15)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "start_prefill",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PrefillRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/submitted": {
+      "post": {
+        "summary": "User submitted on the portal; start the clock (E18)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "submitted",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmittedRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/check-status": {
+      "post": {
+        "summary": "Check complaint status with the agent (E19)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "check_status",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckStatusRequest"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cases/{case_id}/steps/{n}/prepare-next": {
+      "post": {
+        "summary": "Prepare the next filing (E20)",
+        "tags": [
+          "steps"
+        ],
+        "operationId": "prepare_next",
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AnswersRequest": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Answers",
+            "type": "object"
+          }
+        },
+        "required": [
+          "answers"
+        ],
+        "title": "AnswersRequest",
+        "type": "object"
+      },
+      "Case": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "NEW",
+              "INTAKE_DONE",
+              "LADDER_READY",
+              "AWAITING_APPROVAL",
+              "FILLING",
+              "REVIEW_READY",
+              "SUBMITTED_BY_USER",
+              "WAITING",
+              "DUE",
+              "ESCALATION_READY",
+              "RESOLVED",
+              "CLOSED",
+              "BLOCKED",
+              "FAILED"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "case_json": {
+            "$ref": "#/components/schemas/CaseJson"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "questions": {
+            "items": {
+              "$ref": "#/components/schemas/Question"
+            },
+            "title": "Questions",
+            "type": "array"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/Step"
+            },
+            "title": "Steps",
+            "type": "array"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineItem"
+            },
+            "title": "Timeline",
+            "type": "array"
+          },
+          "disclaimer": {
+            "default": "Sunwai helps you follow the complaint procedure. It is not legal advice and does not guarantee any outcome. Please check the official portal before submitting.",
+            "title": "Disclaimer",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "updated_at",
+          "state",
+          "language",
+          "case_json"
+        ],
+        "title": "Case",
+        "type": "object"
+      },
+      "CaseJson": {
+        "properties": {
+          "language": {
+            "default": "en",
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "category": {
+            "default": "other",
+            "enum": [
+              "bank_payment",
+              "ecommerce_refund",
+              "travel",
+              "telecom",
+              "insurance",
+              "other"
+            ],
+            "title": "Category",
+            "type": "string"
+          },
+          "summary": {
+            "default": "",
+            "title": "Summary",
+            "type": "string"
+          },
+          "amount_inr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amount Inr"
+          },
+          "incident_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Incident Date"
+          },
+          "counterparty": {
+            "$ref": "#/components/schemas/Counterparty"
+          },
+          "reference_numbers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Reference Numbers",
+            "type": "array"
+          },
+          "prior_contact": {
+            "$ref": "#/components/schemas/PriorContact"
+          },
+          "desired_outcome": {
+            "anyOf": [
+              {
+                "enum": [
+                  "refund",
+                  "reversal",
+                  "replacement",
+                  "apology",
+                  "other"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Desired Outcome"
+          },
+          "evidence_found": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Found",
+            "type": "array"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Missing Fields",
+            "type": "array"
+          },
+          "pii_flags": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Pii Flags",
+            "type": "array"
+          }
+        },
+        "title": "CaseJson",
+        "type": "object"
+      },
+      "CaseList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/CaseSummary"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "CaseList",
+        "type": "object"
+      },
+      "CaseSummary": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "created_at": {
+            "title": "Created At",
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "NEW",
+              "INTAKE_DONE",
+              "LADDER_READY",
+              "AWAITING_APPROVAL",
+              "FILLING",
+              "REVIEW_READY",
+              "SUBMITTED_BY_USER",
+              "WAITING",
+              "DUE",
+              "ESCALATION_READY",
+              "RESOLVED",
+              "CLOSED",
+              "BLOCKED",
+              "FAILED"
+            ],
+            "title": "State",
+            "type": "string"
+          },
+          "summary": {
+            "title": "Summary",
+            "type": "string"
+          },
+          "counterparty_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Counterparty Name"
+          },
+          "amount_inr": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Amount Inr"
+          },
+          "next_deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Next Deadline"
+          },
+          "current_step": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Current Step"
+          }
+        },
+        "required": [
+          "id",
+          "created_at",
+          "state",
+          "summary"
+        ],
+        "title": "CaseSummary",
+        "type": "object"
+      },
+      "CheckStatusRequest": {
+        "properties": {
+          "portal": {
+            "anyOf": [
+              {
+                "enum": [
+                  "sandbox",
+                  "live"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Portal"
+          }
+        },
+        "title": "CheckStatusRequest",
+        "type": "object"
+      },
+      "ClockRequest": {
+        "properties": {
+          "advance_days": {
+            "anyOf": [
+              {
+                "maximum": 3650,
+                "minimum": -3650,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Advance Days"
+          },
+          "reset": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reset"
+          }
+        },
+        "title": "ClockRequest",
+        "type": "object"
+      },
+      "CloseRequest": {
+        "properties": {
+          "reason": {
+            "enum": [
+              "resolved",
+              "abandoned"
+            ],
+            "title": "Reason",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ],
+        "title": "CloseRequest",
+        "type": "object"
+      },
+      "Counterparty": {
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Name"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "enum": [
+                  "bank",
+                  "payment_app",
+                  "merchant",
+                  "airline",
+                  "telco",
+                  "insurer",
+                  "other"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Type"
+          }
+        },
+        "title": "Counterparty",
+        "type": "object"
+      },
+      "DemoClock": {
+        "properties": {
+          "now": {
+            "title": "Now",
+            "type": "string"
+          },
+          "today": {
+            "title": "Today",
+            "type": "string"
+          },
+          "offset_days": {
+            "title": "Offset Days",
+            "type": "integer"
+          },
+          "simulated": {
+            "title": "Simulated",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "now",
+          "today",
+          "offset_days",
+          "simulated"
+        ],
+        "title": "DemoClock",
+        "type": "object"
+      },
+      "Draft": {
+        "properties": {
+          "subject": {
+            "title": "Subject",
+            "type": "string"
+          },
+          "body": {
+            "title": "Body",
+            "type": "string"
+          },
+          "placeholders_to_fill": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Placeholders To Fill",
+            "type": "array"
+          },
+          "attachments_to_mention": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Attachments To Mention",
+            "type": "array"
+          },
+          "language": {
+            "default": "en",
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "word_count": {
+            "default": 0,
+            "title": "Word Count",
+            "type": "integer"
+          },
+          "safety": {
+            "$ref": "#/components/schemas/DraftSafety"
+          },
+          "edited_by_user": {
+            "default": false,
+            "title": "Edited By User",
+            "type": "boolean"
+          },
+          "updated_at": {
+            "title": "Updated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject",
+          "body",
+          "safety",
+          "updated_at"
+        ],
+        "title": "Draft",
+        "type": "object"
+      },
+      "DraftSafety": {
+        "properties": {
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "issues": {
+            "items": {
+              "$ref": "#/components/schemas/SafetyIssue"
+            },
+            "title": "Issues",
+            "type": "array"
+          }
+        },
+        "required": [
+          "ok"
+        ],
+        "title": "DraftSafety",
+        "type": "object"
+      },
+      "DraftUpdateRequest": {
+        "properties": {
+          "subject": {
+            "maxLength": 300,
+            "minLength": 1,
+            "title": "Subject",
+            "type": "string"
+          },
+          "body": {
+            "maxLength": 6000,
+            "minLength": 1,
+            "title": "Body",
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject",
+          "body"
+        ],
+        "title": "DraftUpdateRequest",
+        "type": "object"
+      },
+      "ErrorBody": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "details": {
+            "additionalProperties": true,
+            "title": "Details",
+            "type": "object"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "title": "ErrorBody",
+        "type": "object"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorBody"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponse",
+        "type": "object"
+      },
+      "EscalationLevel": {
+        "properties": {
+          "level": {
+            "title": "Level",
+            "type": "string"
+          },
+          "contact": {
+            "title": "Contact",
+            "type": "string"
+          }
+        },
+        "required": [
+          "level",
+          "contact"
+        ],
+        "title": "EscalationLevel",
+        "type": "object"
+      },
+      "EscalationPack": {
+        "properties": {
+          "recommendation": {
+            "enum": [
+              "close",
+              "escalate",
+              "wait_more",
+              "needs_user_input"
+            ],
+            "title": "Recommendation",
+            "type": "string"
+          },
+          "next_forum_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Next Forum Id"
+          },
+          "filing_deadline": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Filing Deadline"
+          },
+          "reasoning": {
+            "title": "Reasoning",
+            "type": "string"
+          },
+          "evidence_pack_checklist": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Evidence Pack Checklist",
+            "type": "array"
+          },
+          "needs_verification": {
+            "default": false,
+            "title": "Needs Verification",
+            "type": "boolean"
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Draft"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "recommendation",
+          "reasoning"
+        ],
+        "title": "EscalationPack",
+        "type": "object"
+      },
+      "FieldMapItem": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Value"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source"
+          }
+        },
+        "required": [
+          "label"
+        ],
+        "title": "FieldMapItem",
+        "type": "object"
+      },
+      "Forum": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          },
+          "name_hi": {
+            "title": "Name Hi",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "company",
+              "regulator",
+              "helpline",
+              "commission"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "official_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Official Url"
+          },
+          "filing_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Filing Url"
+          },
+          "track_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Track Url"
+          },
+          "sector": {
+            "enum": [
+              "banking",
+              "consumer",
+              "any"
+            ],
+            "title": "Sector",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "name_hi",
+          "kind",
+          "sector"
+        ],
+        "title": "Forum",
+        "type": "object"
+      },
+      "ForumList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Forum"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ForumList",
+        "type": "object"
+      },
+      "GrievanceRoute": {
+        "properties": {
+          "grievance_form_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Grievance Form Url"
+          },
+          "grievance_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Grievance Email"
+          },
+          "nodal_officer_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Nodal Officer Name"
+          },
+          "escalation_matrix": {
+            "items": {
+              "$ref": "#/components/schemas/EscalationLevel"
+            },
+            "title": "Escalation Matrix",
+            "type": "array"
+          },
+          "page_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Url"
+          },
+          "evidence_quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Evidence Quote"
+          },
+          "found_via": {
+            "enum": [
+              "tinyfish_search+agent",
+              "seed",
+              "mock"
+            ],
+            "title": "Found Via",
+            "type": "string"
+          },
+          "checked_at": {
+            "title": "Checked At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "found_via",
+          "checked_at"
+        ],
+        "title": "GrievanceRoute",
+        "type": "object"
+      },
+      "Health": {
+        "properties": {
+          "ok": {
+            "title": "Ok",
+            "type": "boolean"
+          },
+          "mock_mode": {
+            "title": "Mock Mode",
+            "type": "boolean"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          },
+          "tinyfish": {
+            "enum": [
+              "ok",
+              "missing_key",
+              "error"
+            ],
+            "title": "Tinyfish",
+            "type": "string"
+          },
+          "models": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ModelRole"
+            },
+            "propertyNames": {
+              "enum": [
+                "intake",
+                "reason",
+                "fast"
+              ]
+            },
+            "title": "Models",
+            "type": "object"
+          }
+        },
+        "required": [
+          "ok",
+          "mock_mode",
+          "version",
+          "tinyfish",
+          "models"
+        ],
+        "title": "Health",
+        "type": "object"
+      },
+      "LlmStats": {
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "by_model": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ModelStats"
+            },
+            "title": "By Model",
+            "type": "object"
+          }
+        },
+        "required": [
+          "calls",
+          "by_model"
+        ],
+        "title": "LlmStats",
+        "type": "object"
+      },
+      "ModelRole": {
+        "properties": {
+          "primary": {
+            "title": "Primary",
+            "type": "string"
+          },
+          "available": {
+            "title": "Available",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "primary",
+          "available"
+        ],
+        "title": "ModelRole",
+        "type": "object"
+      },
+      "ModelStats": {
+        "properties": {
+          "calls": {
+            "title": "Calls",
+            "type": "integer"
+          },
+          "fallbacks": {
+            "title": "Fallbacks",
+            "type": "integer"
+          },
+          "p50_ms": {
+            "title": "P50 Ms",
+            "type": "number"
+          },
+          "errors": {
+            "title": "Errors",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "calls",
+          "fallbacks",
+          "p50_ms",
+          "errors"
+        ],
+        "title": "ModelStats",
+        "type": "object"
+      },
+      "OkResponse": {
+        "properties": {
+          "ok": {
+            "default": true,
+            "title": "Ok",
+            "type": "boolean"
+          }
+        },
+        "title": "OkResponse",
+        "type": "object"
+      },
+      "PrefillPreview": {
+        "properties": {
+          "portal_mode": {
+            "enum": [
+              "sandbox",
+              "live"
+            ],
+            "title": "Portal Mode",
+            "type": "string"
+          },
+          "portal_url": {
+            "title": "Portal Url",
+            "type": "string"
+          },
+          "field_map": {
+            "items": {
+              "$ref": "#/components/schemas/FieldMapItem"
+            },
+            "title": "Field Map",
+            "type": "array"
+          },
+          "draft_excerpt": {
+            "default": "",
+            "title": "Draft Excerpt",
+            "type": "string"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Warnings",
+            "type": "array"
+          }
+        },
+        "required": [
+          "portal_mode",
+          "portal_url"
+        ],
+        "title": "PrefillPreview",
+        "type": "object"
+      },
+      "PrefillRequest": {
+        "properties": {
+          "approved": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Approved"
+          },
+          "portal": {
+            "default": "sandbox",
+            "enum": [
+              "sandbox",
+              "live"
+            ],
+            "title": "Portal",
+            "type": "string"
+          }
+        },
+        "title": "PrefillRequest",
+        "type": "object"
+      },
+      "PriorContact": {
+        "properties": {
+          "contacted_company": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Contacted Company"
+          },
+          "date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Date"
+          },
+          "complaint_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Complaint Number"
+          },
+          "got_reply": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Got Reply"
+          },
+          "reply_date": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Reply Date"
+          },
+          "satisfied_with_reply": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Satisfied With Reply"
+          }
+        },
+        "title": "PriorContact",
+        "type": "object"
+      },
+      "Question": {
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "question": {
+            "title": "Question",
+            "type": "string"
+          },
+          "question_hi": {
+            "title": "Question Hi",
+            "type": "string"
+          },
+          "input": {
+            "enum": [
+              "date",
+              "number",
+              "text",
+              "select",
+              "boolean"
+            ],
+            "title": "Input",
+            "type": "string"
+          },
+          "options": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/QuestionOption"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Options"
+          }
+        },
+        "required": [
+          "field",
+          "question",
+          "question_hi",
+          "input"
+        ],
+        "title": "Question",
+        "type": "object"
+      },
+      "QuestionOption": {
+        "properties": {
+          "value": {
+            "title": "Value",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "label_hi": {
+            "title": "Label Hi",
+            "type": "string"
+          }
+        },
+        "required": [
+          "value",
+          "label",
+          "label_hi"
+        ],
+        "title": "QuestionOption",
+        "type": "object"
+      },
+      "ReviewField": {
+        "properties": {
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Value"
+          },
+          "filled": {
+            "title": "Filled",
+            "type": "boolean"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source"
+          }
+        },
+        "required": [
+          "label",
+          "filled"
+        ],
+        "title": "ReviewField",
+        "type": "object"
+      },
+      "ReviewPacket": {
+        "properties": {
+          "reached_review_screen": {
+            "title": "Reached Review Screen",
+            "type": "boolean"
+          },
+          "stopped_before_submit": {
+            "title": "Stopped Before Submit",
+            "type": "boolean"
+          },
+          "safety_flagged": {
+            "title": "Safety Flagged",
+            "type": "boolean"
+          },
+          "portal_mode": {
+            "enum": [
+              "sandbox",
+              "live"
+            ],
+            "title": "Portal Mode",
+            "type": "string"
+          },
+          "portal_url": {
+            "title": "Portal Url",
+            "type": "string"
+          },
+          "page_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Page Url"
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/ReviewField"
+            },
+            "title": "Fields",
+            "type": "array"
+          },
+          "fields_missing": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Fields Missing",
+            "type": "array"
+          },
+          "blocker": {
+            "anyOf": [
+              {
+                "enum": [
+                  "login",
+                  "otp",
+                  "captcha",
+                  "portal_down",
+                  "form_not_found",
+                  "bot_challenge"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Blocker"
+          },
+          "blocker_message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Blocker Message"
+          },
+          "notes": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Notes"
+          },
+          "screenshots": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Screenshots",
+            "type": "array"
+          },
+          "video_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Video Url"
+          },
+          "generated_at": {
+            "title": "Generated At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "reached_review_screen",
+          "stopped_before_submit",
+          "safety_flagged",
+          "portal_mode",
+          "portal_url",
+          "generated_at"
+        ],
+        "title": "ReviewPacket",
+        "type": "object"
+      },
+      "Rule": {
+        "properties": {
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "freshness": {
+            "enum": [
+              "live",
+              "cached",
+              "stale",
+              "seed"
+            ],
+            "title": "Freshness",
+            "type": "string"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Url"
+          },
+          "source_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Domain"
+          },
+          "source_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Title"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Fetched At"
+          },
+          "evidence_snippet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Evidence Snippet"
+          },
+          "forum_id": {
+            "title": "Forum Id",
+            "type": "string"
+          },
+          "scheme_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Scheme Name"
+          },
+          "effective_from": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Effective From"
+          },
+          "wait_days_before_escalation": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Wait Days Before Escalation"
+          },
+          "filing_window_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Filing Window Days"
+          },
+          "filing_window_counts_from": {
+            "default": "unclear",
+            "enum": [
+              "later_of_wait_end_or_last_reply",
+              "company_reply",
+              "end_of_wait",
+              "incident",
+              "unclear"
+            ],
+            "title": "Filing Window Counts From",
+            "type": "string"
+          },
+          "evidence": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": "Evidence",
+            "type": "object"
+          },
+          "eligibility_conditions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Eligibility Conditions",
+            "type": "array"
+          },
+          "exclusions": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Exclusions",
+            "type": "array"
+          },
+          "documents_required": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Documents Required",
+            "type": "array"
+          },
+          "unknowns": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Unknowns",
+            "type": "array"
+          },
+          "confidence": {
+            "default": "seed",
+            "enum": [
+              "high",
+              "medium",
+              "low",
+              "seed"
+            ],
+            "title": "Confidence",
+            "type": "string"
+          },
+          "changed_from_previous": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/RuleChange"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Changed From Previous"
+          },
+          "superseded_value_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Superseded Value Note"
+          }
+        },
+        "required": [
+          "rule_id",
+          "freshness",
+          "forum_id"
+        ],
+        "title": "Rule",
+        "type": "object"
+      },
+      "RuleChange": {
+        "properties": {
+          "field": {
+            "title": "Field",
+            "type": "string"
+          },
+          "old": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Old"
+          },
+          "new": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "New"
+          }
+        },
+        "required": [
+          "field"
+        ],
+        "title": "RuleChange",
+        "type": "object"
+      },
+      "RuleRef": {
+        "properties": {
+          "rule_id": {
+            "title": "Rule Id",
+            "type": "string"
+          },
+          "freshness": {
+            "enum": [
+              "live",
+              "cached",
+              "stale",
+              "seed"
+            ],
+            "title": "Freshness",
+            "type": "string"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Url"
+          },
+          "source_domain": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Domain"
+          },
+          "source_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Source Title"
+          },
+          "fetched_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Fetched At"
+          },
+          "evidence_snippet": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Evidence Snippet"
+          }
+        },
+        "required": [
+          "rule_id",
+          "freshness"
+        ],
+        "title": "RuleRef",
+        "type": "object"
+      },
+      "Run": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "fill",
+              "status",
+              "discover",
+              "rule_refresh"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed",
+              "blocked",
+              "safety_flagged",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "step_ordinal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Ordinal"
+          },
+          "tinyfish_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tinyfish Run Id"
+          },
+          "streaming_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Streaming Url"
+          },
+          "video_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Video Url"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Started At"
+          },
+          "ended_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ended At"
+          },
+          "events_count": {
+            "default": 0,
+            "title": "Events Count",
+            "type": "integer"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RunError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "status"
+        ],
+        "title": "Run",
+        "type": "object"
+      },
+      "RunDetail": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "fill",
+              "status",
+              "discover",
+              "rule_refresh"
+            ],
+            "title": "Kind",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "failed",
+              "blocked",
+              "safety_flagged",
+              "cancelled"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "step_ordinal": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Step Ordinal"
+          },
+          "tinyfish_run_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Tinyfish Run Id"
+          },
+          "streaming_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Streaming Url"
+          },
+          "video_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Video Url"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Started At"
+          },
+          "ended_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ended At"
+          },
+          "events_count": {
+            "default": 0,
+            "title": "Events Count",
+            "type": "integer"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RunError"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/RunEventOut"
+            },
+            "title": "Events",
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "status"
+        ],
+        "title": "RunDetail",
+        "type": "object"
+      },
+      "RunError": {
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "retryable": {
+            "title": "Retryable",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "retryable"
+        ],
+        "title": "RunError",
+        "type": "object"
+      },
+      "RunEventOut": {
+        "properties": {
+          "seq": {
+            "title": "Seq",
+            "type": "integer"
+          },
+          "tf_type": {
+            "title": "Tf Type",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "at": {
+            "title": "At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "seq",
+          "tf_type",
+          "message",
+          "at"
+        ],
+        "title": "RunEventOut",
+        "type": "object"
+      },
+      "RunIdResponse": {
+        "properties": {
+          "run_id": {
+            "title": "Run Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "run_id"
+        ],
+        "title": "RunIdResponse",
+        "type": "object"
+      },
+      "SafetyIssue": {
+        "properties": {
+          "type": {
+            "enum": [
+              "legal_advice",
+              "threat",
+              "invented_fact",
+              "pii",
+              "security_bypass"
+            ],
+            "title": "Type",
+            "type": "string"
+          },
+          "quote": {
+            "title": "Quote",
+            "type": "string"
+          },
+          "fix": {
+            "title": "Fix",
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "quote",
+          "fix"
+        ],
+        "title": "SafetyIssue",
+        "type": "object"
+      },
+      "SandboxAttemptItem": {
+        "properties": {
+          "session_id": {
+            "title": "Session Id",
+            "type": "string"
+          },
+          "kind": {
+            "title": "Kind",
+            "type": "string"
+          },
+          "at": {
+            "title": "At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id",
+          "kind",
+          "at"
+        ],
+        "title": "SandboxAttemptItem",
+        "type": "object"
+      },
+      "SandboxAttemptRequest": {
+        "properties": {
+          "session_id": {
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Session Id",
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "form_opened",
+              "field_changed",
+              "review_reached",
+              "submit_clicked"
+            ],
+            "title": "Kind",
+            "type": "string"
+          }
+        },
+        "required": [
+          "session_id",
+          "kind"
+        ],
+        "title": "SandboxAttemptRequest",
+        "type": "object"
+      },
+      "SandboxAttemptsSummary": {
+        "properties": {
+          "review_reached": {
+            "title": "Review Reached",
+            "type": "integer"
+          },
+          "submit_clicked": {
+            "title": "Submit Clicked",
+            "type": "integer"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/SandboxAttemptItem"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "review_reached",
+          "submit_clicked",
+          "items"
+        ],
+        "title": "SandboxAttemptsSummary",
+        "type": "object"
+      },
+      "SandboxStatus": {
+        "properties": {
+          "complaint_number": {
+            "title": "Complaint Number",
+            "type": "string"
+          },
+          "status_text": {
+            "title": "Status Text",
+            "type": "string"
+          },
+          "last_updated": {
+            "title": "Last Updated",
+            "type": "string"
+          },
+          "remarks": {
+            "title": "Remarks",
+            "type": "string"
+          }
+        },
+        "required": [
+          "complaint_number",
+          "status_text",
+          "last_updated",
+          "remarks"
+        ],
+        "title": "SandboxStatus",
+        "type": "object"
+      },
+      "Scenario": {
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "title_hi": {
+            "title": "Title Hi",
+            "type": "string"
+          },
+          "language": {
+            "enum": [
+              "en",
+              "hi",
+              "hinglish"
+            ],
+            "title": "Language",
+            "type": "string"
+          },
+          "text": {
+            "title": "Text",
+            "type": "string"
+          },
+          "image_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Image Url"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "title_hi",
+          "language",
+          "text"
+        ],
+        "title": "Scenario",
+        "type": "object"
+      },
+      "ScenarioList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Scenario"
+            },
+            "title": "Items",
+            "type": "array"
+          }
+        },
+        "required": [
+          "items"
+        ],
+        "title": "ScenarioList",
+        "type": "object"
+      },
+      "StatusCheck": {
+        "properties": {
+          "checked_at": {
+            "title": "Checked At",
+            "type": "string"
+          },
+          "found": {
+            "title": "Found",
+            "type": "boolean"
+          },
+          "status_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Status Text"
+          },
+          "normalized_status": {
+            "default": "unknown",
+            "enum": [
+              "received",
+              "in_progress",
+              "replied",
+              "closed",
+              "rejected",
+              "unknown"
+            ],
+            "title": "Normalized Status",
+            "type": "string"
+          },
+          "last_updated": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Last Updated"
+          },
+          "remarks": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Remarks"
+          },
+          "blocker": {
+            "anyOf": [
+              {
+                "enum": [
+                  "login",
+                  "otp",
+                  "captcha",
+                  "portal_down",
+                  "form_not_found",
+                  "bot_challenge"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Blocker"
+          }
+        },
+        "required": [
+          "checked_at",
+          "found"
+        ],
+        "title": "StatusCheck",
+        "type": "object"
+      },
+      "Step": {
+        "properties": {
+          "ordinal": {
+            "title": "Ordinal",
+            "type": "integer"
+          },
+          "forum": {
+            "$ref": "#/components/schemas/Forum"
+          },
+          "action": {
+            "title": "Action",
+            "type": "string"
+          },
+          "action_hi": {
+            "title": "Action Hi",
+            "type": "string"
+          },
+          "why": {
+            "title": "Why",
+            "type": "string"
+          },
+          "why_hi": {
+            "title": "Why Hi",
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "locked",
+              "open",
+              "filling",
+              "review_ready",
+              "blocked",
+              "submitted",
+              "waiting",
+              "due",
+              "done",
+              "skipped",
+              "expired"
+            ],
+            "title": "Status",
+            "type": "string"
+          },
+          "opens_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Opens At"
+          },
+          "closes_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Closes At"
+          },
+          "opens_when": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Opens When"
+          },
+          "due_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Due At"
+          },
+          "days_until_open": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Days Until Open"
+          },
+          "days_until_close": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Days Until Close"
+          },
+          "needs_verification": {
+            "default": false,
+            "title": "Needs Verification",
+            "type": "boolean"
+          },
+          "rule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RuleRef"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "grievance_route": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/GrievanceRoute"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "draft": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Draft"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "latest_run": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Run"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "review_packet": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReviewPacket"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "ack_number": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Ack Number"
+          },
+          "submitted_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Submitted At"
+          },
+          "status_checks": {
+            "items": {
+              "$ref": "#/components/schemas/StatusCheck"
+            },
+            "title": "Status Checks",
+            "type": "array"
+          }
+        },
+        "required": [
+          "ordinal",
+          "forum",
+          "action",
+          "action_hi",
+          "why",
+          "why_hi",
+          "status"
+        ],
+        "title": "Step",
+        "type": "object"
+      },
+      "SubmittedRequest": {
+        "properties": {
+          "ack_number": {
+            "maxLength": 64,
+            "minLength": 3,
+            "title": "Ack Number",
+            "type": "string"
+          },
+          "submitted_at": {
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "title": "Submitted At",
+            "type": "string"
+          }
+        },
+        "required": [
+          "ack_number",
+          "submitted_at"
+        ],
+        "title": "SubmittedRequest",
+        "type": "object"
+      },
+      "TimelineItem": {
+        "properties": {
+          "at": {
+            "title": "At",
+            "type": "string"
+          },
+          "type": {
+            "title": "Type",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          },
+          "title_hi": {
+            "title": "Title Hi",
+            "type": "string"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Detail"
+          }
+        },
+        "required": [
+          "at",
+          "type",
+          "title",
+          "title_hi"
+        ],
+        "title": "TimelineItem",
+        "type": "object"
+      }
+    }
+  }
+}

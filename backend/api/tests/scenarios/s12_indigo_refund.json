@@ -1,0 +1,31 @@
+{
+  "id": "s12_indigo_refund",
+  "text": "IndiGo ne meri flight 6 Oct ko cancel kar di, refund ₹7,800 abhi tak nahi mila. Customer care ko 7 Oct ko complaint ki thi.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "nch",
+      "consumer_commission"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "waiting",
+        "due_at": null
+      },
+      {
+        "ordinal": 2,
+        "status": "open",
+        "needs_verification": true
+      },
+      {
+        "ordinal": 3,
+        "status": "locked"
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

@@ -1,0 +1,16 @@
+{
+  "portal": "Kanakpur Demo Bank (fictional)",
+  "date_format": "DD/MM/YYYY",
+  "fields": [
+    {"id": "category", "label": "Complaint category", "type": "select", "options": ["UPI / payment", "Card", "Account", "Other"]},
+    {"id": "customer_name", "label": "Customer name", "type": "text"},
+    {"id": "mobile_last4", "label": "Mobile number (last 4 digits)", "type": "text"},
+    {"id": "email", "label": "Email", "type": "email"},
+    {"id": "account_last4", "label": "Account or card (last 4 digits)", "type": "text"},
+    {"id": "txn_date", "label": "Transaction date", "type": "text", "hint": "DD/MM/YYYY"},
+    {"id": "txn_ref", "label": "Transaction reference", "type": "text"},
+    {"id": "amount", "label": "Amount (₹)", "type": "number"},
+    {"id": "description", "label": "Complaint description", "type": "textarea"},
+    {"id": "prev_complaint", "label": "Previous complaint number (optional)", "type": "text"}
+  ]
+}

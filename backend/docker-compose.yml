@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./api
+    env_file: .env
+    environment:
+      DATABASE_URL: sqlite:////data/sunwai.db
+    ports: ["8000:8000"]
+    volumes: ["sunwai-data:/data"]
+  # web:            # added by the frontend team
+  #   build: ./web
+  #   env_file: ./web/.env.local
+  #   ports: ["3000:3000"]
+  #   depends_on: [api]
+volumes:
+  sunwai-data:

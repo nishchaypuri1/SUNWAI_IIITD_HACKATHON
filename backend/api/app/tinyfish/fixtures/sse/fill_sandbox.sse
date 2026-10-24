@@ -1,0 +1,24 @@
+: Mock agent run on the public sandbox grievance form. Shape follows docs.tinyfish.ai SSE events.
+: The COMPLETE result is replaced at replay time with values built from the case's field map.
+data: {"type":"STARTED","run_id":"tf_fixture","timestamp":"2026-10-24T12:00:00+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Opening the Kanakpur Demo Bank grievance form","timestamp":"2026-10-24T12:00:03+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Selecting the complaint category","timestamp":"2026-10-24T12:00:06+05:30"}
+
+data: {"type":"HEARTBEAT","timestamp":"2026-10-24T12:00:07+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Typing the transaction date","timestamp":"2026-10-24T12:00:09+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Typing the transaction reference and amount","timestamp":"2026-10-24T12:00:12+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Pasting the complaint description","timestamp":"2026-10-24T12:00:15+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Leaving name, mobile, email and account fields empty for the user","timestamp":"2026-10-24T12:00:17+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Clicking 'Review' to open the review screen","timestamp":"2026-10-24T12:00:20+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Review screen reached. Stopping before submit as instructed","timestamp":"2026-10-24T12:00:22+05:30"}
+
+data: {"type":"COMPLETE","run_id":"tf_fixture","status":"COMPLETED","result":{"reached_review_screen":true,"fields_filled":[],"fields_missing":[],"blocker":"none","final_submit_clicked":false,"notes":"fixture"},"timestamp":"2026-10-24T12:00:24+05:30"}
+

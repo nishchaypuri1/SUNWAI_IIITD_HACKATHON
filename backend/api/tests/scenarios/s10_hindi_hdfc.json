@@ -1,0 +1,27 @@
+{
+  "id": "s10_hindi_hdfc",
+  "text": "मेरे HDFC बैंक खाते से 12 अक्टूबर को ₹3,200 कट गए लेकिन लेनदेन विफल हुआ। मैंने 13 अक्टूबर को बैंक में शिकायत की, अभी तक कोई जवाब नहीं आया।",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "waiting",
+        "due_at": "2026-11-12"
+      },
+      {
+        "ordinal": 2,
+        "status": "locked",
+        "opens_at": "2026-11-12",
+        "closes_at": "2027-02-10"
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

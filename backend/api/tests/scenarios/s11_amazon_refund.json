@@ -1,0 +1,32 @@
+{
+  "id": "s11_amazon_refund",
+  "text": "Amazon has not refunded ₹2,349 for my returned order (order 408-1234567-1234567). The return was picked up on 3 October 2026.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "nch",
+      "consumer_commission"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "open"
+      },
+      {
+        "ordinal": 2,
+        "status": "locked"
+      },
+      {
+        "ordinal": 3,
+        "status": "locked",
+        "closes_at": null
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": [
+      "prior_contact.contacted_company"
+    ]
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

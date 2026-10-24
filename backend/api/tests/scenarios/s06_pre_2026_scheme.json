@@ -1,0 +1,30 @@
+{
+  "id": "s06_pre_2026_scheme",
+  "text": "My UPI transfer of Rs 2,000 failed on 10 June 2026. I complained to Canara Bank on 15 June 2026. No reply so far.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "due",
+        "due_at": "2026-07-15"
+      },
+      {
+        "ordinal": 2,
+        "status": "expired",
+        "opens_at": "2026-07-15",
+        "closes_at": "2026-10-13",
+        "needs_verification": true
+      }
+    ],
+    "warnings_contain": [
+      "2021"
+    ],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

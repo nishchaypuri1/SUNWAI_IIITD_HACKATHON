@@ -1,0 +1,13 @@
+: Mock agent run on a live portal that asks the user to verify with mobile number + OTP.
+data: {"type":"STARTED","run_id":"tf_fixture","timestamp":"2026-10-24T12:10:00+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Opening the complaint portal","timestamp":"2026-10-24T12:10:03+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Looking for the option to lodge a new complaint","timestamp":"2026-10-24T12:10:07+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"The portal asks for a mobile number and a one-time password before the form","timestamp":"2026-10-24T12:10:11+05:30"}
+
+data: {"type":"PROGRESS","run_id":"tf_fixture","purpose":"Stopping: OTP verification must be done by the user","timestamp":"2026-10-24T12:10:13+05:30"}
+
+data: {"type":"COMPLETE","run_id":"tf_fixture","status":"COMPLETED","result":{"reached_review_screen":false,"fields_filled":[],"fields_missing":[],"blocker":"otp","final_submit_clicked":false,"notes":"Mobile number + OTP verification required before the complaint form."},"profile_hint":{"message":"This site requires sign-in.","setup_url":null,"reason":"auth_wall"},"timestamp":"2026-10-24T12:10:14+05:30"}
+

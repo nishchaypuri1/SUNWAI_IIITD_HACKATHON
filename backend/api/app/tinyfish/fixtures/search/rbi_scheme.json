@@ -1,0 +1,27 @@
+{
+  "match": [
+    "ombudsman"
+  ],
+  "recorded_at": "2026-10-24T12:35:00+05:30",
+  "note": "Recorded from a web search on 2026-10-24 (titles and URLs only). Re-record with scripts/record_fixtures.py.",
+  "results": [
+    {
+      "title": "Reserve Bank - Integrated Ombudsman Scheme, 2026",
+      "url": "https://www.rbi.org.in/commonperson/english/scripts/FAQs.aspx?Id=3407",
+      "snippet": "",
+      "site_name": "rbi.org.in"
+    },
+    {
+      "title": "Frequently Asked Questions Reserve Bank - Integrated Ombudsman Scheme, 2026",
+      "url": "https://www.rbi.org.in/commonman/Upload/English/FAQs/PDFs/RBIOS01072026.pdf",
+      "snippet": "",
+      "site_name": "rbi.org.in"
+    },
+    {
+      "title": "The Reserve Bank- Integrated Ombudsman Scheme, 2026",
+      "url": "https://www.sc.bank.in/important-information/client-experience/banking-ombudsman/",
+      "snippet": "",
+      "site_name": "sc.bank.in"
+    }
+  ]
+}

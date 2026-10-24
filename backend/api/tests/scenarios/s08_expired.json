@@ -1,0 +1,29 @@
+{
+  "id": "s08_expired",
+  "text": "UPI payment of Rs 650 failed via Google Pay on 25 July 2026. I complained to Google Pay on 1 August 2026. There has been no response.",
+  "today": "2026-12-01",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "due",
+        "due_at": "2026-08-31"
+      },
+      {
+        "ordinal": 2,
+        "status": "expired",
+        "opens_at": "2026-08-31",
+        "closes_at": "2026-11-29"
+      }
+    ],
+    "warnings_contain": [
+      "appears to have passed"
+    ],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

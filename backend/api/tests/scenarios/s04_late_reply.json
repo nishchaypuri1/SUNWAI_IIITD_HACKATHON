@@ -1,0 +1,26 @@
+{
+  "id": "s04_late_reply",
+  "text": "I complained to Kotak Mahindra Bank on 1 September 2026. The unauthorised card charge of Rs 4,250 was made on 28 August 2026. They replied on 20 October 2026 but I am not satisfied.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "rbi_cms"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "due"
+      },
+      {
+        "ordinal": 2,
+        "status": "open",
+        "opens_at": "2026-10-01",
+        "closes_at": "2027-01-18"
+      }
+    ],
+    "warnings_contain": [],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

@@ -1,0 +1,26 @@
+{
+  "id": "s13_telecom_out_of_scope",
+  "text": "Jio charged me Rs 399 for a recharge on 5 October 2026 but my plan was not activated. I have not complained yet.",
+  "today": "2026-10-24",
+  "expected": {
+    "route": [
+      "company_grievance",
+      "nch"
+    ],
+    "steps": [
+      {
+        "ordinal": 1,
+        "status": "open"
+      },
+      {
+        "ordinal": 2,
+        "status": "locked"
+      }
+    ],
+    "warnings_contain": [
+      "not covered yet"
+    ],
+    "missing_contains": []
+  },
+  "note": "Expected dates hand-computed from RB-IOS 2026 (30-day wait, 90-day window from the later of wait end and last reply)."
+}

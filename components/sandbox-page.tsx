@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, CheckCircle2, ExternalLink, Info, Search, ShieldAlert, X } from "lucide-react";
 import { getCase, recordSandboxAttempt, sandboxStatus } from "@/lib/api";
 import { usePrefs } from "@/components/app-shell";
@@ -10,12 +10,12 @@ type Fields = { category: string; customer_name: string; mobile_last4: string; e
 const emptyFields: Fields = { category: "", customer_name: "", mobile_last4: "", email: "", account_last4: "", txn_date: "", txn_ref: "", amount: "", description: "", prev_complaint: "" };
 
 export function SandboxGrievancePage({ session, review }: { session: string; review: boolean }) {
-  const { t } = usePrefs(); const [fields, setFields] = useState<Fields>(emptyFields); const [isReview, setIsReview] = useState(review); const [submitted, setSubmitted] = useState(false); const [initialized, setInitialized] = useState(false);
+  const { t } = usePrefs(); const [fields, setFields] = useState<Fields>(emptyFields); const [isReview, setIsReview] = useState(review); const [submitted, setSubmitted] = useState(false); const initialized = useRef(false);
   useEffect(() => {
-    if (initialized) return; setInitialized(true);
+    if (initialized.current) return; initialized.current = true;
     if (!review) void recordSandboxAttempt(session || "visitor", "form_opened");
     if (session) void getCase(session).then((item) => { const sample = item.case_json; setFields((current) => ({ ...current, category: "UPI / payment", txn_date: sample.incident_date ? `${sample.incident_date.slice(8, 10)}/${sample.incident_date.slice(5, 7)}/${sample.incident_date.slice(0, 4)}` : "30/09/2026", txn_ref: sample.reference_numbers[0] || "", amount: sample.amount_inr ? String(sample.amount_inr) : "", description: item.steps[0]?.draft?.body || sample.summary, prev_complaint: sample.prior_contact.complaint_number || "" })); }).catch(() => undefined);
-  }, [initialized, review, session]);
+  }, [review, session]);
   const update = (key: keyof Fields, value: string) => { setFields((current) => ({ ...current, [key]: value })); if (session) void recordSandboxAttempt(session, "field_changed"); };
   const preview = (event: React.FormEvent) => { event.preventDefault(); setIsReview(true); setSubmitted(false); if (session) void recordSandboxAttempt(session, "review_reached"); };
   const back = () => setIsReview(false);
